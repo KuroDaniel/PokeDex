@@ -1,0 +1,29 @@
+﻿@model CreaturesViewModel
+@{
+    ViewData["Title"] = "Pokemon Details";
+}
+
+<h1>Details</h1>
+<table>
+    <tr>
+        <td>DexNum:</td>
+        <td>@Model.DexNum</td>
+    </tr>
+    <tr>
+        <td>Name:</td>
+        <td>@Model.Name</td>
+    </tr>
+    <tr>
+        <td>Sprite:</td>
+        <td><img src="@Model.CreaturePic" /></td>
+    </tr>
+    <tr>
+        <td>Types</td>
+        <td>@foreach (var type in Model.Types)
+        {
+            <img class="type" src="@type.TypePic" />
+        }
+        </td>
+    </tr>
+</table>
+
