@@ -41,7 +41,7 @@ namespace PokeDex.UI.Controllers
         [HttpGet]
         public IActionResult Details(int id)
         {
-            CreaturesViewModel ViewModel = null;
+            CreaturesViewModel viewModel = null;
 
             using (var client = new HttpClient())
             {
@@ -55,11 +55,11 @@ namespace PokeDex.UI.Controllers
                     var readTask = result.Content.ReadAsAsync<CreaturesViewModel>();
                     readTask.Wait();
 
-                    ViewModel = readTask.Result;
+                    viewModel = readTask.Result;
                 }
             }
 
-            return View(ViewModel);
+            return View(viewModel);
         }
 
         [HttpGet]
@@ -86,24 +86,25 @@ namespace PokeDex.UI.Controllers
         }
 
         [HttpPost]
-        public IActionResult Update(CreaturesViewModel creatures)
+        public IActionResult Update(CreaturesViewModel creatureVM)
         {
+            //CreaturesDTO creatureDTO = null;
             using (var client = new HttpClient())
             {
                 client.BaseAddress = new Uri($"http://localhost:5000/api/PokeDex/");
                 var responseTask = client.GetAsync($"EditPokemon");
                 responseTask.Wait();
 
-                var result = responseTask.Result;
-                if (result.IsSuccessStatusCode)
-                {
-                    var readTask = result.Content.ReadAsAsync<CreaturesViewModel>();
-                    readTask.Wait();
+                //var result = responseTask.Result;
+                //if (result.IsSuccessStatusCode)
+                //{
+                //    var readTask = result.Content.ReadAsAsync<CreaturesViewModel>();
+                //    readTask.Wait();
 
-                    creatures = readTask.Result;
-                }
+                //    creatures = readTask.Result;
+                //}
             }
-            return RedirectToAction("Update", new { id = creatures.CreatureId });
+            return RedirectToAction("Update", new { id = creatureVM.CreatureId });
         }
     }
 }
