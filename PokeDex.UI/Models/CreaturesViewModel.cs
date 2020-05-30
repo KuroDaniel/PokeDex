@@ -15,5 +15,9 @@ namespace PokeDex.UI.Models
         public string CreaturePic { get; set; }
         public int DexNum { get; set; }
         public List<TypingViewModel> Types { get; set; }
+
+        public int? TypeId1 { get; set; }
+        
+        public int? TypeId2 { get; set; }
     }
 }

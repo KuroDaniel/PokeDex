@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using PokeDex.Data;
+using PokeDex.Domain.DTOModels;
 using PokeDex.UI.Models;
 
 namespace PokeDex.UI.Controllers
@@ -80,19 +81,53 @@ namespace PokeDex.UI.Controllers
                     readTask.Wait();
 
                     creatures = readTask.Result;
+
                 }
             }
+
+            ViewBag.TypeList1 = GetTypesDropDown();
+            ViewBag.TypeList2 = GetTypesDropDown();
+
+
             return View(creatures);
+        }
+
+        private List<TypesDropDown> GetTypesDropDown()
+        {
+            List<TypesDropDown> dropDown = null;
+            using (var client = new HttpClient())
+            {
+                
+                client.BaseAddress = new Uri($"http://localhost:5000/api/PokeDex/");
+                var responseTask = client.GetAsync($"GetAllTypes");
+                responseTask.Wait();
+
+                var result = responseTask.Result;
+                if (result.IsSuccessStatusCode)
+                {
+                    var readTask = result.Content.ReadAsAsync<List<TypesDropDown>>();
+                    readTask.Wait();
+
+                    dropDown = readTask.Result;
+
+                }
+            }
+
+            return dropDown;
         }
 
         [HttpPost]
         public IActionResult Update(CreaturesViewModel creatureVM)
         {
-            //CreaturesDTO creatureDTO = null;
+            CreaturesDTO creatureDTO = null;
+            creatureDTO.CreatureId = creatureVM.CreatureId;
+            creatureDTO.CreaturePic = creatureVM.CreaturePic;
+            creatureDTO.Name = creatureVM.Name;
+            creatureDTO.DexNum = creatureVM.DexNum;
             using (var client = new HttpClient())
             {
                 client.BaseAddress = new Uri($"http://localhost:5000/api/PokeDex/");
-                var responseTask = client.GetAsync($"EditPokemon");
+                var responseTask = client.GetAsync($"EditPokemon/{creatureDTO}");
                 responseTask.Wait();
 
                 //var result = responseTask.Result;

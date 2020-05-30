@@ -1,10 +1,8 @@
-﻿using PokeDex.Domain.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using System.Text;
 
-namespace PokeDex.API.DTOModels
+namespace PokeDex.Domain.DTOModels
 {
     public class TypingDTO
     {

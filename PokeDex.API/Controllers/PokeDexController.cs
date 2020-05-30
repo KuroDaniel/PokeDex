@@ -7,9 +7,9 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Update;
-using PokeDex.API.DTOModels;
 using PokeDex.Data;
 using PokeDex.Domain.Models;
+using PokeDex.Domain.DTOModels;
 
 namespace PokeDex.API.Controllers
 {
