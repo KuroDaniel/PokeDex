@@ -2,9 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Text;
 using System.Threading.Tasks;
+using System.Web;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Nancy.Json;
 using PokeDex.Data;
 using PokeDex.Domain.DTOModels;
 using PokeDex.UI.Models;
@@ -119,27 +122,111 @@ namespace PokeDex.UI.Controllers
         [HttpPost]
         public IActionResult Update(CreaturesViewModel creatureVM)
         {
-            CreaturesDTO creatureDTO = null;
+
+            CreaturesDTO creatureDTO = new CreaturesDTO();
             creatureDTO.CreatureId = creatureVM.CreatureId;
-            creatureDTO.CreaturePic = creatureVM.CreaturePic;
             creatureDTO.Name = creatureVM.Name;
             creatureDTO.DexNum = creatureVM.DexNum;
+
             using (var client = new HttpClient())
             {
                 client.BaseAddress = new Uri($"http://localhost:5000/api/PokeDex/");
-                var responseTask = client.GetAsync($"EditPokemon/{creatureDTO}");
+
+                var responseTask = client.PostAsJsonAsync<CreaturesDTO>("EditPokemon", creatureDTO );
                 responseTask.Wait();
 
-                //var result = responseTask.Result;
-                //if (result.IsSuccessStatusCode)
-                //{
-                //    var readTask = result.Content.ReadAsAsync<CreaturesViewModel>();
-                //    readTask.Wait();
+                var result = responseTask.Result;
+                if (result.IsSuccessStatusCode)
+                {
+                    var readTask = result.Content.ReadAsAsync<bool>();
+                    readTask.Wait();
 
-                //    creatures = readTask.Result;
-                //}
+                    var resultTask = readTask.Result;
+                }
             }
             return RedirectToAction("Update", new { id = creatureVM.CreatureId });
+        }
+
+        [HttpGet]
+        public IActionResult Add()
+        {
+            CreaturesViewModel creatures = new CreaturesViewModel();
+
+            return View(creatures);
+        }
+
+        [HttpPost]
+        public IActionResult Add(CreaturesViewModel creatureVM)
+        {
+
+            CreaturesDTO creatureDTO = new CreaturesDTO();
+            creatureDTO.Name = creatureVM.Name;
+            creatureDTO.DexNum = creatureVM.DexNum;
+
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri($"http://localhost:5000/api/PokeDex/");
+
+                var responseTask = client.PostAsJsonAsync<CreaturesDTO>("AddPokemon", creatureDTO);
+                responseTask.Wait();
+
+                var result = responseTask.Result;
+                if (result.IsSuccessStatusCode)
+                {
+                    var readTask = result.Content.ReadAsAsync<bool>();
+                    readTask.Wait();
+
+                    var resultTask = readTask.Result;
+                }
+            }
+            return RedirectToAction("Index");
+        }
+
+        [HttpGet]
+        public IActionResult Delete(int id)
+        {
+            CreaturesViewModel viewModel = null;
+
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri($"http://localhost:5000/api/PokeDex/");
+                var responseTask = client.GetAsync($"PokemonDetails/{id}");
+                responseTask.Wait();
+
+                var result = responseTask.Result;
+                if (result.IsSuccessStatusCode)
+                {
+                    var readTask = result.Content.ReadAsAsync<CreaturesViewModel>();
+                    readTask.Wait();
+
+                    viewModel = readTask.Result;
+                }
+            }
+
+            return View(viewModel);
+        }
+
+        [HttpPost]
+        public IActionResult DeletePokemon(CreaturesViewModel creatureVM)
+        {
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri($"http://localhost:5000/api/PokeDex/");
+
+                var responseTask = client.DeleteAsync("DeletePokemon/" + creatureVM.CreatureId);
+                responseTask.Wait();
+
+                var result = responseTask.Result;
+                if (result.IsSuccessStatusCode)
+                {
+                    var readTask = result.Content.ReadAsAsync<bool>();
+                    readTask.Wait();
+
+                    var resultTask = readTask.Result;
+                }
+            }
+
+            return RedirectToAction("Index");
         }
     }
 }

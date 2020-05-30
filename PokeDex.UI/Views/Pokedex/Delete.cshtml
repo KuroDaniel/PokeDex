@@ -1,0 +1,24 @@
+﻿@model CreaturesViewModel
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h1>Delete</h1>
+
+
+@using (Html.BeginForm("DeletePokemon", "Pokedex", "FormMethod.Post"))
+{
+    @Html.HiddenFor(m => m.CreatureId)
+    @Html.DisplayFor(m => m.Name)
+    @Html.DisplayFor(m => m.DexNum)
+    @if (Model.CreaturePic != null)
+    {
+        Html.DisplayFor(m => m.CreaturePic);
+    }
+
+        <input type="submit" value="Delete"/>
+        <a class="btn btn-info" asp-controller="Pokedex" asp-action="Index" role="button">Cancel</a>
+
+
+
+}

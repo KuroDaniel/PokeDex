@@ -120,7 +120,7 @@ namespace PokeDex.API.Controllers
         }
         [HttpPost]
         [Route("api/[controller]/AddPokemon")]
-        public bool AddPokemon(CreaturesDTO creature)
+        public bool AddPokemon([FromBody]CreaturesDTO creature)
         {
             try
             {
@@ -134,8 +134,9 @@ namespace PokeDex.API.Controllers
                 context.SaveChanges();
                 return true;
             }
-            catch
+            catch (Exception e)
             {
+                var error = e.ToString();
                 return false;
             }
 
@@ -143,13 +144,13 @@ namespace PokeDex.API.Controllers
 
         [HttpPost]
         [Route("api/[controller]/EditPokemon")]
-        public bool EditPokemon(CreaturesDTO creature)
+        public bool EditPokemon([FromBody]CreaturesDTO creature)
         {
             try
             {
                 Creatures creatureToEdit = context.Creatures.Find(creature.CreatureId);
 
-                creatureToEdit.CreaturePic = creature.CreaturePic;
+                //creatureToEdit.CreaturePic = creature.CreaturePic;
                 creatureToEdit.DexNum = creature.DexNum;
                 creatureToEdit.Name = creature.Name;
 
@@ -167,7 +168,7 @@ namespace PokeDex.API.Controllers
 
         [HttpDelete]
         [Route("api/[controller]/DeletePokemon/{id}")]
-        public bool DeletePokemon(int id)
+        public bool DeletePokemon([FromRoute]int id)
         {
             try
             {

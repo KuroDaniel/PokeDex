@@ -6,17 +6,27 @@
 <h1>Update</h1>
 
 <form asp-controller="Pokedex" asp-action="Update" method="post">
+    @Html.HiddenFor(m => m.CreatureId)
+
+    @*@Html.HiddenFor(m => Model.Types)*@
+    @for (var i = 0; i < Model.Types.Count; i++)
+    {
+        @Html.HiddenFor(x => x.Types[i].TypeId)
+        @Html.HiddenFor(x => x.Types[i].TypeName)
+        @Html.HiddenFor(x => x.Types[i].TypePic)
+    }
+    @Html.HiddenFor(m => m.CreaturePic)
     @Html.LabelFor(m => m.Name)
-    @Html.TextBoxFor(m => m.Name, new  {@class = "form-control"})
+    @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
 
     @Html.LabelFor(m => m.DexNum)
     @Html.TextBoxFor(m => m.DexNum, new { @class = "form-control" })
 
-    @Html.LabelFor(m => m.TypeId1)
-    @Html.DropDownList("TypeId1", new SelectList(ViewBag.TypeList1, "TypeId", "TypeName"), "Select First Type", new { @class = "form-control"})
+    @*@Html.LabelFor(m => m.TypeId1)
+        @Html.DropDownList("TypeId1", new SelectList(ViewBag.TypeList1, "TypeId", "TypeName"), "Select First Type", new { @class = "form-control"})
 
-    @Html.LabelFor(m => m.TypeId2)
-    @Html.DropDownList("TypeId2", new SelectList(ViewBag.TypeList2, "TypeId", "TypeName"), "Select Second Type", new { @class = "form-control" })
-
+        @Html.LabelFor(m => m.TypeId2)
+        @Html.DropDownList("TypeId2", new SelectList(ViewBag.TypeList2, "TypeId", "TypeName"), "Select Second Type", new { @class = "form-control" })*@
+    <input type="submit" value="Submit" />
 </form>
 

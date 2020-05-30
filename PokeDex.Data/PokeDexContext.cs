@@ -26,6 +26,10 @@ namespace PokeDex.Data
             modelBuilder.Entity<Creature_Types>()
                 .HasKey(ct => new { ct.CreatureId, ct.TypeId });
 
+            modelBuilder.Entity<Creatures>()
+                .Property(c => c.CreatureId)
+                .ValueGeneratedOnAdd();
+
             //modelBuilder.Entity<Creature_Types>()
             //    .HasOne(ct => ct.Creatures)
             //    .WithMany(c => c.Creature_Types)
