@@ -35,10 +35,10 @@
             </td>
             @*<td><i class="far fa-eye"></i></td>*@
             <td>
-                <div>
-                    <a class="btn btn-info" asp-controller="Pokedex" asp-action="Details" asp-route-id="@pokemon.CreatureId" role="button">Details</a>
-                    <a class="btn btn-info" asp-controller="Pokedex" asp-action="Update" asp-route-id="@pokemon.CreatureId" role="button">Update</a>
-                    <a class="btn btn-info" asp-controller="Pokedex" asp-action="Delete" asp-route-id="@pokemon.CreatureId" role="button">Delete</a>
+                <div class="row">
+                    <a class="col-md-4 btn btn-info" asp-controller="Pokedex" asp-action="Details" asp-route-id="@pokemon.CreatureId" role="button">Details</a>
+                    <a class="col-md-4 btn btn-info" asp-controller="Pokedex" asp-action="Update" asp-route-id="@pokemon.CreatureId" role="button">Update</a>
+                    <a class="col-md-4 btn btn-info" asp-controller="Pokedex" asp-action="Delete" asp-route-id="@pokemon.CreatureId" role="button">Delete</a>
                 </div>
 
             </td>
