@@ -20,7 +20,7 @@
     "PokeDex.API": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "weatherforecast",
+      "launchUrl": "PokeDex",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
